@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+coverage/
+rezka-progress-*.json
+*.json.gz
+*.zip

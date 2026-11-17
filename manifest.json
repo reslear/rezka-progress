@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Rezka Progress",
+  "version": "0.14.0",
+  "description": "Локальная история гостевого просмотра и отправка прогресса в аккаунт после входа.",
+  "minimum_chrome_version": "120",
+  "incognito": "spanning",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://hdrezka-home.tv/*",
+    "https://rezka.ag/*",
+    "https://www.rezka.ag/*",
+    "https://hdrezka.mn/*",
+    "https://rezka.si/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Прогресс просмотра",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://hdrezka-home.tv/*",
+        "https://rezka.ag/*",
+        "https://www.rezka.ag/*",
+        "https://hdrezka.mn/*",
+        "https://rezka.si/*"
+      ],
+      "js": [
+        "parser.js",
+        "account.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://hdrezka-home.tv/series/*",
+        "https://hdrezka-home.tv/films/*",
+        "https://rezka.ag/series/*",
+        "https://rezka.ag/films/*",
+        "https://www.rezka.ag/series/*",
+        "https://www.rezka.ag/films/*",
+        "https://hdrezka.mn/series/*",
+        "https://hdrezka.mn/films/*",
+        "https://rezka.si/series/*",
+        "https://rezka.si/films/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

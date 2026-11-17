@@ -4,3 +4,5 @@ coverage/
 rezka-progress-*.json
 *.json.gz
 *.zip
+dist/
+__pycache__/

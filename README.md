@@ -18,3 +18,14 @@ Chrome 120+. ZIP нужно распаковать: напрямую Chrome ег
 ```sh
 node --test extension.test.mjs
 ```
+
+## Релиз
+
+Обнови `version` в `manifest.json`, закоммить изменения и отправь тег с той же версией:
+
+```sh
+git tag v0.14.1
+git push origin main --tags
+```
+
+GitHub Actions выполнит тесты и прикрепит ZIP к релизу. Для локальной сборки закоммиченного кода: `python3 scripts/package.py`.

@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout tagged commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Test
+        run: node --test extension.test.mjs
+      - name: Package extension
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python3 scripts/package.py
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${RELEASE_TAG#v}"
+          ASSET="dist/rezka-progress-${VERSION}.zip"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$ASSET" --clobber
+          else
+            gh release create "$RELEASE_TAG" "$ASSET" --verify-tag \
+              --title "Rezka Progress ${VERSION}" \
+              --notes 'Скачайте ZIP, распакуйте и загрузите папку через chrome://extensions → Режим разработчика → Загрузить распакованное расширение.'
+          fi

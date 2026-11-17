@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Rezka Progress",
   "version": "0.14.0",
-  "description": "Локальная история гостевого просмотра и отправка прогресса в аккаунт после входа.",
+  "description": "История и прогресс просмотра.",
   "minimum_chrome_version": "120",
   "incognito": "spanning",
   "permissions": [
